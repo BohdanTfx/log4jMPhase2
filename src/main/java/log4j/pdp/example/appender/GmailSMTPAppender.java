@@ -16,6 +16,7 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.net.SMTPAppender;
 import org.apache.log4j.spi.LoggingEvent;
+import org.apache.log4j.spi.TriggeringEventEvaluator;
 
 import com.sun.mail.smtp.SMTPTransport;
 
@@ -23,9 +24,15 @@ public class GmailSMTPAppender extends SMTPAppender {
 	protected Session session;
 
 	public GmailSMTPAppender() {
-		super();
+		super(new TriggeringEventEvaluator() {
+			@Override
+			public boolean isTriggeringEvent(LoggingEvent event) {
+				return true;
+			}
+		});
 	}
 
+	@Override
 	protected Session createSession() {
 		Properties props = new Properties();
 		props.put("mail.smtps.host", getSMTPHost());
@@ -49,6 +56,7 @@ public class GmailSMTPAppender extends SMTPAppender {
 		return session;
 	}
 
+	@Override
 	protected void sendBuffer() {
 		try {
 			MimeBodyPart part = new MimeBodyPart();

@@ -12,7 +12,7 @@ public class LevelHandlerFilter extends Filter {
 		if (!event.getLevel().equals(level)) {
 			return DENY;
 		}
-		return ACCEPT;
+		return NEUTRAL;
 	}
 
 	public String getLevel() {
